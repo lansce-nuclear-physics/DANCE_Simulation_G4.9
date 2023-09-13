@@ -1,0 +1,21 @@
+To test the application run these to examples and compare the ouput files:
+
+1) This example will run gamma-ray source 88Y
+in DANCE, 5000 events. Run: 
+
+$G4WORKDIR/bin/$G4SYSTEM/DANCE MasterInput_Ex1.txt # DICEBOX_DANCE or DANCE?
+and compare your RootOut_Ex1.root to ./Examples/RootOut_Ex1.root.
+
+
+
+2) This example will run artificial cascades from the file
+InputFile_Ex2.dat. Here each event has multiplicity M=3
+and Eg1=1MeV, Eg2=2MeV and Eg3=3MeV.
+See MasterInput_Ex2.txt for how to set the flags to read from external
+file.
+
+Run:
+$G4WORKDIR/bin/$G4SYSTEM/DANCE MasterInput_Ex1.txt
+Compare RooutOut_Ex2 with ./Examples/RootOut_Ex2.root.
+
+See also SG4900keV.mac for how to run single gamma rays.

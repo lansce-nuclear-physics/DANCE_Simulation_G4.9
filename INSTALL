@@ -1,0 +1,96 @@
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//   Software Name: DANCE Data Acquisition and Analysis Package       //
+//     Subpackage: DANCE_Simulation_G4.9                              //
+//   Identifying Number: C18105                                       // 
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//                                                                    //
+// Copyright 2019.                                                    //
+// Triad National Security, LLC. All rights reserved.                 //
+//                                                                    //
+//                                                                    //
+//                                                                    //
+// This program was produced under U.S. Government contract           //
+// 89233218CNA000001 for Los Alamos National Laboratory               //
+// (LANL), which is operated by Triad National Security, LLC          //
+// for the U.S. Department of Energy/National Nuclear Security        //
+// Administration. All rights in the program are reserved by          //
+// Triad National Security, LLC, and the U.S. Department of           //
+// Energy/National Nuclear Security Administration. The Government    //
+// is granted for itself and others acting on its behalf a            //
+// nonexclusive, paid-up, irrevocable worldwide license in this       //
+// material to reproduce, prepare derivative works, distribute        //
+// copies to the public, perform publicly and display publicly,       //
+// and to permit others to do so.                                     //
+//                                                                    //
+// This is open source software; you can redistribute it and/or       //
+// modify it under the terms of the GPLv2 License. If software        //
+// is modified to produce derivative works, such modified             //
+// software should be clearly marked, so as not to confuse it         //
+// with the version available from LANL. Full text of the GPLv2       //
+// License can be found in the License file of the repository         //
+// (GPLv2.0_License.txt).                                             //
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
+
+
+Apr 3, 2008; Marian Jandel, mjandel@lanl.gov
+
+Make sure You have Geant4 Installed, 
+with the proper environmental variables set.
+
+This is the output for
+"export | grep G4" when testing examples of this release.
+
+---------------------------------------------------------------------------
+declare -x G4ELASTICDATA="/opt/geant4/data/G4ELASTIC1.1"
+declare -x G4INSTALL="/opt/geant4/geant4.8.0.p01"
+declare -x G4LEDATA="/opt/geant4/data/G4EMLOW3.0"
+declare -x G4LEVELGAMMADATA="/opt/geant4/data/PhotonEvaporation2.0"
+declare -x G4LIB="/opt/geant4/geant4.8.0.p01/lib"
+declare -x G4LIB_BUILD_G3TOG4="1"
+declare -x G4LIB_BUILD_SHARED="1"
+declare -x G4LIB_BUILD_STATIC="1"
+declare -x G4LIB_BUILD_ZLIB="1"
+declare -x G4LIB_USE_G3TOG4="1"
+declare -x G4LIB_USE_GRANULAR="1"
+declare -x G4LIB_USE_ZLIB="1"
+declare -x G4RADIOACTIVEDATA="/opt/geant4/data/RadiativeDecay3.0"
+declare -x G4SYSTEM="Linux-g++"
+declare -x G4UI_BUILD_XAW_SESSION="1"
+declare -x G4UI_BUILD_XM_SESSION="1"
+declare -x G4UI_USE_TCSH="1"
+declare -x G4UI_USE_XAW="1"
+declare -x G4UI_USE_XM="1"
+declare -x G4VIS_BUILD_DAWN_DRIVER="1"
+declare -x G4VIS_BUILD_OPENGLXM_DRIVER="1"
+declare -x G4VIS_BUILD_OPENGLX_DRIVER="1"
+declare -x G4VIS_BUILD_RAYTRACERX_DRIVER="1"
+declare -x G4VIS_BUILD_VRML_DRIVER="1"
+declare -x G4VIS_USE_DAWN="1"
+declare -x G4VIS_USE_OPENGLX="1"
+declare -x G4VIS_USE_OPENGLXM="1"
+declare -x G4VIS_USE_RAYTRACERX="1"
+declare -x G4VIS_USE_VRML="1"
+declare -x NeutronHPCrossSections="/opt/geant4/data/G4NDL3.8"
+--------------------------------------------------------------------------
+
+
+Type: 
+
+1) make clean
+2) make
+
+If something like this shows up:
+
+mkdir: cannot create directory `/opt/geant4/geant4.8.0.p01/tmp/Linux-g++/DANCE': Permission denied
+make: *** [/opt/geant4/geant4.8.0.p01/tmp/Linux-g++/DANCE/exe/DANCE.d] Error 1
+
+(may happen if you do not have access to some directories)
+
+either ask for an access to these directories or reset env. variables:
+
+expport G4TMP=".../tmp"
+export G4EXE=".../bin"

@@ -1,0 +1,49 @@
+# Set the following variables to customize the Geant4 output
+# The name of the variables should not be changed 
+
+BinaryCrystalFile		false
+BinaryClusterFile		false
+AddPrimaryGammas		false
+AddTimeOfGammas			false
+RootAutoSave			5000
+RootFile			true
+RootFileName			./RootOut_Ex2.root
+ClusterMGatedHists		true
+CrystalMGatedHists		true
+SingleGateEcrystal_1		511 keV	0.1 MeV		// set E and +-dE to gate on Crystal E
+SingleGateEcrystal_2		1274 keV	0.1 MeV		// if E=0 gated histograms are not produced
+SingleGateEcrystal_3		0 MeV	0.1 MeV
+SingleGateEcluster_1		0 MeV	0.1 MeV		// set E and +-dE to gate on Cluster E
+SingleGateEcluster_2		0 MeV	0.1 keV		// if E=0 gated histograms are not produced
+SingleGateEcluster_3		0 MeV	0.1 MeV
+
+# here DANCE parts flags 
+#(first flag=(do/dont) include in set-up, second flag = visibility in graphics ouput)
+# if first flag==false second is set to false also
+# all crystals are build by default 
+
+LiHShell			true	false
+BeamPipe			true	false
+SupportingSphere		true	false
+Holders				false	false
+PMLense				true	false
+PVCShell			true		// is invisible all the times
+ShowCrystals			0	1000	// enable visibility on crystals between given ID
+
+Array:dance			false
+Crystal:cylinder		false
+Crystal:polygons		true
+BeamPipeVacuum			true 
+CrystalDistance			18.6	cm      // should be between 18-20
+LiHDensity			0.7288           // default is 0.7288 g/cm3
+LiHInnerRadius			10.5	cm
+LiHOuterRadius			16.5	cm
+E_threshold			0.15 MeV
+Q_energy			6.0	0.3	// Qvalue +- dQ gate Sorry units are fixed to MeV
+
+# here choice of the external input
+
+MacroInput			false
+MacroInputFile			Y88.mac
+ExternalInput			true
+ExternalInputFile		InputFile_Ex2.dat		
