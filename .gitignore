@@ -1,3 +1,5 @@
+# We start with Github defaults for compilation files, executables, etc
+
 # Prerequisites
 *.d
 
@@ -37,3 +39,19 @@
 
 # corefiles from debugging
 core.*
+
+
+## and here and below are all our custom LANL things
+# First, we ignore things created in a G4WORKDIR
+tmp
+bin
+
+# Don't track backup files
+*.bak
+*~
+.*.swp
+
+# Don't track compilation files
+*.so
+*.o
+.depend
