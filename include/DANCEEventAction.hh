@@ -69,6 +69,10 @@ using namespace AIDA;
 #include "TH1D.h"
 #include "TCanvas.h"
 
+#include <iostream>
+#include <fstream>
+#include <stdint.h>
+
 class G4Event;
 
 class DANCEEventAction : public G4UserEventAction
@@ -209,6 +213,42 @@ class DANCEEventAction : public G4UserEventAction
     { return FindMinimum(mapMin[i][1]); }
     inline G4double GetEMinPositron(G4int i) const
     { return FindMinimum(mapMin[i][2]); }
+
+// Now we add pieces needed for simulation binaries
+  public:
+    void SetTau (G4double value) {fSetTau=value;};
+    G4double GetTau() {return fSetTau;};
+
+  private:
+    std::ofstream outputbinfile;
+
+    //Output of stage 0 bin, old form
+  typedef struct {
+    uint16_t Ifast;            // short integral
+    uint16_t Islow;            // long integral
+    double timestamp;          // Time-Of-Flight in ns
+    uint8_t ID;                // ID from DANCE Map 0 to 161 are DANCE, 241-244 are monitors, 200 is T0
+  } DEVT_STAGE1;
+
+  //Output of stage 0 bin, now with WF ratio (not so important for sim)
+  typedef struct {
+    double timestamp;                // Time-Of-Flight in ns
+    double wfintegral;                // wf integral
+    uint16_t Ifast;            // short integral
+    uint16_t Islow;            // long integral
+    uint8_t ID;                // ID from DANCE Map 0 to 161 are dance, monitors and T0 defined in global.h  
+  } DEVT_STAGE1_WF;
+
+  DEVT_STAGE1_WF devt_out;
+
+  double global_timestamp;
+  int dance_T0_counter;
+  double devent_tau;         // this is the tau for time between captures
+  double ddecay_sigma;       // this is the time width of a single event
+
+  G4double fSetTau;
+// End of pieces needed for simulation binaries
+
 };
 
 #endif
