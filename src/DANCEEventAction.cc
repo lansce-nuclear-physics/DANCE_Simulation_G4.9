@@ -62,7 +62,6 @@
 #include "G4ios.hh"
 #include "G4UnitsTable.hh"
 #include "G4THitsMap.hh"
-#include <fstream>
 
 #include "G4PrimaryVertex.hh"
 #include "G4PrimaryParticle.hh"
@@ -73,6 +72,7 @@
 #include "G4RunManager.hh"
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -358,6 +358,20 @@ if(GPP->SingleGateECluster_E[2]>0){
 	f2_clgate3=new TH1F("EgammaCl_gate3",Num,1000,0,16);
 }
 
+// --------- Begin Components for simulation binaries -------------------
+
+  //Make binary output structure
+  std::stringstream outfilename;
+  outfilename.str();
+  outfilename << "Test2.bin";
+ 
+  outputbinfile.open(outfilename.str().c_str(), std::ios::out | std::ios::binary);
+
+  global_timestamp=6000;
+  dance_T0_counter=0;
+
+// --------- End Components for simulation binaries ---------------------
+
 }
 
 DANCEEventAction::~DANCEEventAction()
@@ -370,6 +384,11 @@ DANCEEventAction::~DANCEEventAction()
 #ifdef G4ANALYSIS_USE
   DANCEAnalysisManager::dispose();
 #endif // G4ANALYSIS_USE
+
+
+// --------- Begin Components for simulation binaries -------------------
+  outputbinfile.close();
+// --------- End Components for simulation binaries ---------------------
 
 }
 
