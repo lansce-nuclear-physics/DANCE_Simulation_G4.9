@@ -704,8 +704,9 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
     }
     else 
     {
-    	std::cout<<"Using the default tau value from 60Co source run"<<std::endl;
+    	// std::cout<<"Using the default tau value from 60Co source run"<<std::endl;
     	//devent_tau = 5818.4;
+    	std::cout<<"Using a nominal tau value of 500 us, which should mean no pileup"<<std::endl;
     	devent_tau = 5.e5;
     	fSetTau = devent_tau;
     }
