@@ -706,7 +706,7 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
     {
     	std::cout<<"Using the default tau value from 60Co source run"<<std::endl;
     	//devent_tau = 5818.4;
-    	devent_tau = 1.e8;
+    	devent_tau = 5.e5;
     	fSetTau = devent_tau;
     }
     
@@ -725,8 +725,8 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
       
       //T0 is 50 ms apart 
       dance_T0_counter++;
-      // if ( ( dance_T0_counter % 100 ) == 0) 
-      //   std::cout<<  " ++++ Writing T0 ++++ for T0 " << dance_T0_counter << std::endl;
+      if ( ( dance_T0_counter % 100 ) == 0) 
+         std::cout<<  " ++++ Writing T0 ++++ for T0 " << dance_T0_counter << std::endl;
     }
 
 // --------- End Components for simulation binaries ---------------------
@@ -751,28 +751,40 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
 
   int Cluster_ID[100];
   
-  for(int i=0;i<counter;i++){
-		Cluster_ID[i]=i+1; // this is for preparation for clusterization routine
+  for(int i=0;i<counter;i++)
+  {
+    Cluster_ID[i]=i+1; // this is for preparation for clusterization routine
 		
-		E_crystal_time[i]=E_crystal_time[i]-min_time;
+    E_crystal_time[i]=E_crystal_time[i]-min_time;
 		
-		#ifdef G4ANALYSIS_USE
-			if(E_crystal_time[i]>=0 && E_crystal_time[i]<1000.) IDdet->fill(E_crystal_time[i]);
-			if(E_crystal_energy[i]<15. && E_crystal_time[i]<200) dc1Hits->fill(E_crystal_energy[i]);
-		#endif
-		f5->Fill(E_crystal_time[i]);
-		
-		f2->Fill(E_crystal_energy[i]);
-			//f3->Fill(E_crystal_ID[i]);
-		ECr_ID->Fill(E_crystal_energy[i], E_crystal_ID[i]);
-			
-		f9->Fill(GPP->GetTheta(E_crystal_ID[i]));
-		f10->Fill(GPP->GetPhi(E_crystal_ID[i]));
-			
-		f12->Fill(E_crystal_ID[i]);
-		
+    #ifdef G4ANALYSIS_USE
+      if(E_crystal_time[i]>=0 && E_crystal_time[i]<1000.) IDdet->fill(E_crystal_time[i]);
+      if(E_crystal_energy[i]<15. && E_crystal_time[i]<200) dc1Hits->fill(E_crystal_energy[i]);
+    #endif
+    f5->Fill(E_crystal_time[i]);
+    f2->Fill(E_crystal_energy[i]);
+    //f3->Fill(E_crystal_ID[i]);
 
-	E_ball+=E_crystal_energy[i];
+    ECr_ID->Fill(E_crystal_energy[i], E_crystal_ID[i]);
+			
+    f9->Fill(GPP->GetTheta(E_crystal_ID[i]));
+    f10->Fill(GPP->GetPhi(E_crystal_ID[i]));
+    f12->Fill(E_crystal_ID[i]);
+
+    E_ball+=E_crystal_energy[i];
+
+
+// --------- Begin Components for simulation binaries -------------------
+
+    devt_out.timestamp = global_timestamp+gRandom->Gaus(0,1.5);   //account for the width of a dance devent 
+    devt_out.wfintegral = 0.12;
+    devt_out.Ifast = E_crystal_energy[i]*1000.0;
+    devt_out.Islow = E_crystal_energy[i]*1000.0;
+    devt_out.ID = E_crystal_ID[i];
+    outputbinfile.write(reinterpret_cast<char*>(&devt_out),sizeof(DEVT_STAGE1));
+ 
+
+// --------- End Components for simulation binaries ---------------------
 
   }
   	if(CrystalGate_Flag[0]==100){
