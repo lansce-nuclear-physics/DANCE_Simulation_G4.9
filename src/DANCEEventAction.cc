@@ -76,6 +76,8 @@
 #include <sstream>
 #include <string>
 
+#include "TMath.h"
+#include "TRandom.h"
 #include "CLHEP/Random/RandFlat.h"
 #include "CLHEP/Random/RandGauss.h"
 
@@ -693,6 +695,42 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
   if(counter==0) return;
   
   
+// --------- Begin Components for simulation binaries -------------------
+// We have an event with M>0, so we check it we need to increment T0s for SimBin
+    //Make the timestamp for this DANCE event
+    if(fSetTau) 
+    {
+      devent_tau = fSetTau;
+    }
+    else 
+    {
+    	std::cout<<"Using the default tau value from 60Co source run"<<std::endl;
+    	//devent_tau = 5818.4;
+    	devent_tau = 1.e8;
+    	fSetTau = devent_tau;
+    }
+    
+    global_timestamp += gRandom->Exp(devent_tau);
+
+    //Put a T0 in the data stream every 50 ms
+    if(global_timestamp > dance_T0_counter*50000000.0 + 6000.0) 
+    {
+      //Make a T0 event
+      devt_out.timestamp = dance_T0_counter*50000000.0 + 6000.0; //6000 is an arbitrary offset
+      devt_out.wfintegral = 1.;  //  This is currently arbitrary.  Need to check
+      devt_out.Ifast = 1000;
+      devt_out.Islow = 1000;
+      devt_out.ID = 200;
+      outputbinfile.write(reinterpret_cast<char*>(&devt_out),sizeof(DEVT_STAGE1_WF));
+      
+      //T0 is 50 ms apart 
+      dance_T0_counter++;
+      // if ( ( dance_T0_counter % 100 ) == 0) 
+      //   std::cout<<  " ++++ Writing T0 ++++ for T0 " << dance_T0_counter << std::endl;
+    }
+
+// --------- End Components for simulation binaries ---------------------
+
   Crystal_Mult=counter;
 
 
@@ -997,38 +1035,7 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
 
 // G4cout << "End of Event " << G4endl;
 }
-// dump the output to the binary file
-/*
-        ofstream myFile("/home/jandel/Analysis/Mar30_2006/replay/CrystalData.dat",ios::app|ios::binary);
 
-		
-	buffer[0]=(unsigned char)(counter);
-	myFile.write((char *) &buffer[0],sizeof(unsigned char));
-
-	for(short i=0;i<counter;i++){
-
-			
-			buffer[0]=(unsigned char)(Crys_ID[i]);
-			myFile.write((char *) &buffer[0],sizeof(unsigned char));
-			
-			buffer[0]=(unsigned char)(Clus_ID[i]);
-			myFile.write((char *) &buffer[0],sizeof(unsigned char));
-
-
-		int intEcrystal=int(Crystal_gammaE[i]*65535./16.);
-		
-		buffer[1]=(unsigned char)(int (1.*intEcrystal/256.));
-		intEcrystal=intEcrystal-(int)(buffer[1]*256.);		
-		buffer[2]=(unsigned char)(intEcrystal);
-
-		myFile.write((char *) &buffer[1],sizeof(unsigned char));
-		myFile.write((char *) &buffer[2],sizeof(unsigned char));
-		
-	
-	}
-
-	myFile.close();
-*/
 G4double DANCEEventAction::GetTotal(const G4THitsMap<G4double> &map) const
 {
 
