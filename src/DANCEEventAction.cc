@@ -710,7 +710,19 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
     	devent_tau = 5.e5;
     	fSetTau = devent_tau;
     }
+// We also need to worry about the time size of the cascade--will if fall in a 10 ns window or not?    
+    if(fSetCascadeSigma) 
+    {
+      cascade_sigma = fSetCascadeSigma;
+    }
+    else 
+    {
+    	std::cout<<"Using a nominal cascade sigma of 0.5 ns, which should no event spreading"<<std::endl;
+    	cascade_sigma = 5.e-1;
+    	fSetCascadeSigma = cascade_sigma;
+    }
     
+
     global_timestamp += gRandom->Exp(devent_tau);
 
     //Put a T0 in the data stream every 50 ms
@@ -777,7 +789,7 @@ void DANCEEventAction::EndOfEventAction(const G4Event* evt)
 
 // --------- Begin Components for simulation binaries -------------------
 
-    devt_out.timestamp = global_timestamp+gRandom->Gaus(0,1.5);   //account for the width of a dance devent 
+    devt_out.timestamp = global_timestamp+gRandom->Gaus(0,cascade_sigma);   //account for the width of a dance devent 
     devt_out.wfintegral = 0.12;
     devt_out.Ifast = E_crystal_energy[i]*1000.0;
     devt_out.Islow = E_crystal_energy[i]*1000.0;

@@ -218,6 +218,8 @@ class DANCEEventAction : public G4UserEventAction
   public:
     void SetTau (G4double value) {fSetTau=value;};
     G4double GetTau() {return fSetTau;};
+    void SetCascadeSigma (G4double value) {fSetCascadeSigma=value;};
+    G4double GetCascadeSigma() {return fSetCascadeSigma;};
 
   private:
     std::ofstream outputbinfile;
@@ -244,9 +246,10 @@ class DANCEEventAction : public G4UserEventAction
   double global_timestamp;
   int dance_T0_counter;
   double devent_tau;         // this is the tau for time between captures
-  double ddecay_sigma;       // this is the time width of a single event
+  double cascade_sigma;      // this is the time width of a single event
 
   G4double fSetTau;
+  G4double fSetCascadeSigma;
 // End of pieces needed for simulation binaries
 
 };
